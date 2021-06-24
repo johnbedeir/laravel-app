@@ -9,7 +9,10 @@ RUN apt-get update -yqq && \
     docker-php-ext-install mysqli pdo pdo_mysql && \
     docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install zip && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* \
+    apt install phpmyadmin php-mbstring php-gettext \
+    phpenmod mbstring \
+    systemctl restart apache2
 
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/var/www/html/laravel_app --filename=composer
 

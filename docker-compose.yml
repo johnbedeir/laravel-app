@@ -1,11 +1,20 @@
 version: "3"
 
 services:
+  apache:
+    image: apache
+    build: ./
+    depends_on:
+      - php
+    container_name: apache_web
+    restart: always
+    ports:
+      - "8081:80"
   php:
     container_name: php
     image: php:7.2-apache
     ports:
-      - 8089:80
+      - 8083:80
     volumes:
       - ./laravel_app:/opt/lamp/htdocs
     depends_on:
@@ -17,7 +26,16 @@ services:
       - 3306:3306
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=secret.
+      - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=yourdb
       - MYSQL_USER=db_user
       - MYSQL_PASSWORD=.mypwd
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - db
+    ports:
+      - 30002:80
+    environment:
+      - PMA_HOST=database
+      - PMA_PORT= 3306
